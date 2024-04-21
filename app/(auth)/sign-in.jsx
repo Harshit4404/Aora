@@ -6,24 +6,38 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import CustomButton from '../../components/CustomButton'
 import FormField from '../../components/FormField'
-
+import { signIn } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 
 const SignIn
  = () => {
+    const { setUser, setIsLogged } = useGlobalContext();
  const [isSubmitting, setSubmitting] = useState(false);
   const [form, setform] = useState({
     email:'',
     password:'',
   })
 
-  const submit = async()=>{
+   const submit = async()=>{
     if(form.email === "" || form.password === ""){
       Alert.alert("Error" , "Please fill in all fields");
     } 
 
     setSubmitting(true);
-  }
+    try{
+      const result = await  signIn(form.email , form.password);
+      setUser(result)
+      setIsLogged(true)
+      Alert.alert("Success" , "User signed in successfully")
+      router.replace('/home')
+    }catch(error){
+      Alert.alert('Error' , error.message)
+    }
+    finally{
+      setSubmitting(false);
+    }
+  };
   return (
     <SafeAreaView className ="bg-primary h-full">
       <ScrollView>

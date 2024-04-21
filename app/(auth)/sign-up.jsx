@@ -8,9 +8,12 @@ import CustomButton from '../../components/CustomButton'
 import FormField from '../../components/FormField'
 
 import { createUser } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignUp
  = () => {
+    const { setUser, setIsLogged } = useGlobalContext();
+
  const [isSubmitting, setSubmitting] = useState(false);
   const [form, setform] = useState({
     username:'',
@@ -19,7 +22,7 @@ const SignUp
   })
 
   const submit = async()=>{
-    if(!form.email || !form.password || !form.username){
+    if(form.email === "" || form.password === "" || form.username === ""){
       Alert.alert("Error" , "Please fill in all fields");
     } 
     // createUser();
@@ -27,6 +30,8 @@ const SignUp
     setSubmitting(true);
     try{
       const result = await createUser(form.email , form.password , form.username);
+      setUser(result)
+      setIsLogged(true)
       router.replace('/home')
     }catch(error){
       Alert.alert('Error' , error.message)
