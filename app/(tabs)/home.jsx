@@ -4,12 +4,19 @@ import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 
 import { images } from "../../constants";
 import SearchInput from "../../components/SearchInput";
+import useAppwrite from "../../lib/useAppwrite";
+import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
+import Trending from "../../components/Trending";
+import EmptyState from "../../components/EmptyState";
+import VideoCard from "../../components/VideoCard";
+import { StatusBar } from "expo-status-bar";
 // import useAppwrite from "../../lib/useAppwrite";
 // import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 
 
 const Home = () => {
-  
+  const {data:posts , refetch } = useAppwrite(getAllPosts)
+  const {data:latestPosts} = useAppwrite(getLatestPosts)
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
@@ -74,6 +81,7 @@ const Home = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
+      <StatusBar backgroundColor="#161622" style='light'/>
     </SafeAreaView>
         
   )

@@ -11,7 +11,6 @@ const SearchInput = ({
   ...props
 }) => {
 
-  const [showPassword, setShowPassword] = useState(false);
   return (
     
       <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center space-x-4">
@@ -21,7 +20,7 @@ const SearchInput = ({
           placeholder="Search a video topic"
           placeholderTextColor="#7b7b8b"
           onChangeText={handleChangeText}
-          secureTextEntry={title === "Password" && !showPassword}
+         
           {...props}
         />
         <TouchableOpacity>
